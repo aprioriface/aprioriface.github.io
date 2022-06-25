@@ -149,7 +149,7 @@
         }
 
         function checkPhase() {
-            fetch('./data.json')
+            fetch('https://chernykh-bd-default-rtdb.firebaseio.com/')
                 .then((response) => {
                     return response.json();
                 })
