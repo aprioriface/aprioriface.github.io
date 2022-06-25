@@ -177,11 +177,13 @@
                 cardnum = +storageCardnum;
             }
             
-            setPhase(config.phase);
-            setTimeout(() => {
+            if (localStorage.getItem('phase') === null || config.phase < 3) {
+                setPhase();
+            }
+            /*setTimeout(() => {
                 checkPhase();
                 setInterval(checkPhase, 30000);
-            }, (30 - new Date().getSeconds() % 30) * 1000);
+            }, (30 - new Date().getSeconds() % 30) * 1000);*/
         });
     </script>
 </body>
