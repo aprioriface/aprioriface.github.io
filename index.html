@@ -148,7 +148,18 @@
             localStorage.removeItem('phase');
         }
 
-        nextPhase(phase);
+        function checkPhase() {
+            fetch('http://example.com/movies.json')
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    nextPhase(data.phase);
+                });
+        } 
+
+        checkPhase();
+        setInterval(checkPhase, 30000);
     </script>
 </body>
 </html>
