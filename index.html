@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy birthsday magic</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: green;
+            margin: 0;
+            padding: 0;
+            perspective: 1000px;
+        }
+
+        #card {
+            height: 70vh;
+            width: calc(0.64 * 70vh);
+            background: white;
+            position: absolute;
+            top: 15vh;
+            left: calc(50vw - 0.32 * 70vh);
+            background-size: 100% 100%;
+            border-radius: 26px;
+            box-shadow: 0 2px 10px black;
+            transform: rotateY(0deg);
+            z-index: 100;
+            transition: transform 1s, z-index 1s, top .5s, left .5s;
+        }
+
+        #card.number1 {
+            background-image: url(./Cards/card1.png);
+        }
+        #card.number2 {
+            background-image: url(./Cards/card2.png);
+        }
+        #card.number3 {
+            background-image: url(./Cards/card3.png);
+        }
+        #card.number4 {
+            background-image: url(./Cards/card4.png);
+        }
+        #card.number5 {
+            background-image: url(./Cards/card5.png);
+        }
+        #card.number6 {
+            background-image: url(./Cards/card6.png);
+        }
+
+        #card.fake1 {
+            background-image: url(./Cards/fake1.png);
+        }
+        #card.fake2 {
+            background-image: url(./Cards/fake2.png);
+        }
+        #card.fake3 {
+            background-image: url(./Cards/fake3.png);
+        }
+        #card.fake4 {
+            background-image: url(./Cards/fake4.png);
+        }
+        #card.fake5 {
+            background-image: url(./Cards/fake5.png);
+        }
+        #card.fake6 {
+            background-image: url(./Cards/fake6.png);
+        }
+
+        .turned #card {
+            transform: rotateY(180deg);
+            z-index: 0;
+        }
+
+        #back {
+            height: 70vh;
+            width: calc(0.64 * 70vh);
+            background: repeating-linear-gradient(-120deg, transparent, transparent 20px, #ff9fc3 15px, #b5c0ff 24px),    
+                        repeating-linear-gradient(120deg, #d21a22,#d21a22 20px,rgb(235 156 160) 15px, #ffb8bb 24px);
+            position: absolute;
+            top: 15vh;
+            left: calc(50vw - 0.32 * 70vh);
+            background-size: 120% 100%;
+            border-radius: 26px;
+            box-shadow: 0 2px 10px black;
+            transform: rotateY(180deg);
+            z-index: 0;
+            transition: transform 1s, z-index 1s, top .5s, left .5s;
+        }
+
+        .turned #back {
+            transform: rotateY(360deg);
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="turned">
+    <div id="back"></div>
+    <div id="card"></div>
+
+    <script>
+        let cardnum = localStorage.getItem('cardnum');
+        if (cardnum === null) {
+            cardnum = new Date().getMinutes() % 6 + 1;
+            localStorage.setItem('cardnum', cardnum);
+        }
+
+        const storagePhase = localStorage.getItem('phase');
+        let phase = storagePhase !== null ? +storagePhase :  0;
+
+        function nextPhase(currentPhase = null) {
+            if (currentPhase !== null) {
+                phase = currentPhase;
+            } else {
+                phase++;
+            }
+
+            switch(phase) {
+                case 0: {
+                    document.querySelector('#card').className = '';
+                    document.querySelector('#card').classList.add(`number${cardnum}`);
+                    setTimeout(() => {
+                        document.body.classList.remove('turned');
+                    }, 1000);
+                } break;
+                case 1: {
+                    document.body.classList.add('turned');
+                } break;
+                case 2: {
+                    document.querySelector('#card').className = '';
+                    document.querySelector('#card').classList.add(`fake${cardnum}`);
+                    document.body.classList.remove('turned');
+                } break;
+                default: {
+                    document.querySelector('#card').className = '';
+                    document.querySelector('#card').classList.add(`prize`);
+                    setTimeout(() => {
+                        document.body.classList.remove('turned');
+                    }, 1000);
+                }
+            }
+            localStorage.setItem('phase', phase);
+        }
+
+        function clearStorage() {
+            localStorage.removeItem('cardnum');
+            localStorage.removeItem('phase');
+        }
+
+        nextPhase(phase);
+    </script>
+</body>
+</html>
