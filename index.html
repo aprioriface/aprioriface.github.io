@@ -99,6 +99,27 @@
     <div id="back"></div>
     <div id="card"></div>
 
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCKPl2NrK0jn58uRFkL9g-HI853gDOTAyg",
+          authDomain: "chernykh-bd.firebaseapp.com",
+          databaseURL: "https://chernykh-bd-default-rtdb.firebaseio.com",
+          projectId: "chernykh-bd",
+          storageBucket: "chernykh-bd.appspot.com",
+          messagingSenderId: "85063436795",
+          appId: "1:85063436795:web:30125b3d63cd23541a235e"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+      </script>
+
     <script>
         let cardnum = localStorage.getItem('cardnum');
         if (cardnum === null) {
@@ -149,7 +170,7 @@
         }
 
         function checkPhase() {
-            fetch('https://chernykh-bd-default-rtdb.firebaseio.com/')
+            fetch('./data.json')
                 .then((response) => {
                     return response.json();
                 })
