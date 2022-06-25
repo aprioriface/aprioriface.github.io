@@ -118,23 +118,25 @@
       </script>
 
     <script>
+        let config = {
+            phase: 0,
+            cardnum: 1
+        };
+        firebase.database().ref('cards').on('value',(snap)=>{
+            config = snap.val();
+        });
+
         let cardnum = localStorage.getItem('cardnum');
         if (cardnum === null) {
-            cardnum = new Date().getMinutes() % 6 + 1;
+            cardnum = config.cardnum;
             localStorage.setItem('cardnum', cardnum);
+
+            config.cardnum++;
+            firebase.database().ref('cards').set(config);
         }
 
-        const storagePhase = localStorage.getItem('phase');
-        let phase = storagePhase !== null ? +storagePhase :  0;
-
-        function nextPhase(currentPhase = null) {
-            if (currentPhase !== null) {
-                phase = currentPhase;
-            } else {
-                phase++;
-            }
-
-            switch(phase) {
+        function setPhase() {
+            switch(config.phase) {
                 case 0: {
                     document.querySelector('#card').className = '';
                     document.querySelector('#card').classList.add(`number${cardnum}`);
@@ -150,13 +152,13 @@
                     document.querySelector('#card').classList.add(`fake${cardnum}`);
                     document.body.classList.remove('turned');
                 } break;
-                default: {
+                case 3: {
                     document.querySelector('#card').className = '';
                     document.querySelector('#card').classList.add(`prize`);
                     setTimeout(() => {
                         document.body.classList.remove('turned');
                     }, 1000);
-                }
+                } break;
             }
             localStorage.setItem('phase', phase);
         }
@@ -167,13 +169,10 @@
         }
 
         function checkPhase() {
-            fetch('./data.json')
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    nextPhase(data.phase);
-                });
+            firebase.database().ref('cards').on('value',(snap)=>{
+                config = snap.val();
+                setPhase();
+            });
         } 
 
         checkPhase();
