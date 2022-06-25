@@ -22,7 +22,8 @@
             position: absolute;
             top: 15vh;
             left: calc(50vw - 0.32 * 70vh);
-            background-size: 100% 100%;
+            background-size: 338% 338%;
+            background-position: center center;
             border-radius: 26px;
             box-shadow: 0 2px 10px black;
             transform: rotateY(0deg);
@@ -31,41 +32,58 @@
         }
 
         #card.number1 {
-            background-image: url(./Cards/card1.png);
+            background-image: url(./Cards/KS.svg);
         }
         #card.number2 {
-            background-image: url(./Cards/card2.png);
+            background-image: url(./Cards/JH.svg);
         }
         #card.number3 {
-            background-image: url(./Cards/card3.png);
+            background-image: url(./Cards/AD.svg);
         }
         #card.number4 {
-            background-image: url(./Cards/card4.png);
+            background-image: url(./Cards/QC.svg);
         }
-        #card.number5 {
-            background-image: url(./Cards/card5.png);
+        #card.number7 {
+            background-image: url(./Cards/KD.svg);
         }
         #card.number6 {
-            background-image: url(./Cards/card6.png);
+            background-image: url(./Cards/JC.svg);
+        }
+        #card.number5 {
+            background-image: url(./Cards/AS.svg);
+        }
+        #card.number8 {
+            background-image: url(./Cards/QH.svg);
         }
 
         #card.fake1 {
-            background-image: url(./Cards/fake1.png);
+            background-image: url(./Cards/KC.svg);
         }
         #card.fake2 {
-            background-image: url(./Cards/fake2.png);
+            background-image: url(./Cards/JD.svg);
         }
         #card.fake3 {
-            background-image: url(./Cards/fake3.png);
+            background-image: url(./Cards/AH.svg);
         }
         #card.fake4 {
-            background-image: url(./Cards/fake4.png);
+            background-image: url(./Cards/QS.svg);
         }
-        #card.fake5 {
-            background-image: url(./Cards/fake5.png);
+        #card.fake7 {
+            background-image: url(./Cards/KH.svg);
         }
         #card.fake6 {
-            background-image: url(./Cards/fake6.png);
+            background-image: url(./Cards/JS.svg);
+        }
+        #card.fake5 {
+            background-image: url(./Cards/AC.svg);
+        }
+        #card.fake8 {
+            background-image: url(./Cards/QD.svg);
+        }
+        
+        #card.prize {
+            background-image: url(./Cards/prize.png);
+            background-size: 142% 100%;
         }
 
         .turned #card {
@@ -180,10 +198,6 @@
             if (localStorage.getItem('phase') === null || config.phase < 3) {
                 setPhase();
             }
-            /*setTimeout(() => {
-                checkPhase();
-                setInterval(checkPhase, 30000);
-            }, (30 - new Date().getSeconds() % 30) * 1000);*/
         });
     </script>
 </body>
