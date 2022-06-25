@@ -158,7 +158,7 @@
             });
         } 
 
-        
+        let cardnum = 1;
         let config = {
             phase: 0,
             cardnum: 1
@@ -166,13 +166,15 @@
         firebase.database().ref('cards').on('value',(snap)=>{
             config = snap.val();
             
-            let cardnum = localStorage.getItem('cardnum');
-            if (cardnum === null) {
+            const storageCardnum = localStorage.getItem('cardnum');
+            if (storageCardnum === null) {
                 cardnum = config.cardnum;
                 localStorage.setItem('cardnum', cardnum);
 
                 config.cardnum++;
                 firebase.database().ref('cards').set(config);
+            } else {
+                cardnum = +storageCardnum;
             }
             
             setPhase(config.phase);
