@@ -118,23 +118,6 @@
       </script>
 
     <script>
-        let config = {
-            phase: 0,
-            cardnum: 1
-        };
-        firebase.database().ref('cards').on('value',(snap)=>{
-            config = snap.val();
-        });
-
-        let cardnum = localStorage.getItem('cardnum');
-        if (cardnum === null) {
-            cardnum = config.cardnum;
-            localStorage.setItem('cardnum', cardnum);
-
-            config.cardnum++;
-            firebase.database().ref('cards').set(config);
-        }
-
         function setPhase() {
             switch(config.phase) {
                 case 0: {
@@ -175,8 +158,26 @@
             });
         } 
 
-        checkPhase();
-        setInterval(checkPhase, 30000);
+        
+        let config = {
+            phase: 0,
+            cardnum: 1
+        };
+        firebase.database().ref('cards').on('value',(snap)=>{
+            config = snap.val();
+            
+            let cardnum = localStorage.getItem('cardnum');
+            if (cardnum === null) {
+                cardnum = config.cardnum;
+                localStorage.setItem('cardnum', cardnum);
+
+                config.cardnum++;
+                firebase.database().ref('cards').set(config);
+            }
+            
+            setPhase(config.phase);
+            setInterval(checkPhase, 30000);
+        });
     </script>
 </body>
 </html>
