@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+    <title>Xmas randomizer</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: red;
+            background-image: url('./images/back.jpg');
+            background-repeat: repeat;
+            background-size: 300px;
+            background-blend-mode: darken;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        body > div.form {
+            opacity: 0;
+            width: 400px;
+            margin: 0 auto;
+            background: rgb(255 122 122 / 64%);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid red;
+            border-color: rgba(255,255,255,.7);
+            box-shadow: 0 5px 30px -14px #620000;
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 1px 1px #620000;
+            margin-top: 35vh;
+            transition: opacity .5s;
+        }
+
+        div.form > div {
+            margin-bottom: 10px;
+        }
+
+        div.form > div > * {
+            width: 100%;
+            display: block;
+        }
+
+        div.form > div.result > * {
+            width: auto;
+            display: inline-block;
+        }
+
+        div.form > div.result {
+            margin: 0;
+            padding: 30px 0 0 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        input {
+            padding: 4px;
+            border: 0;
+            background: transparent;
+            border-bottom: 2px solid snow;
+            box-shadow: 0 5px 5px -4px #620000;
+            width: calc(100% - 8px) !important;
+            outline: none;
+            color: yellow;
+            text-shadow: 0 1px 1px #620000;
+            background-color: rgba(255,255,255,.25);
+            margin-top: 5px;
+        }
+
+        select {
+            padding: 4px;
+            border: 0;
+            background: transparent;
+            border-bottom: 2px solid snow;
+            box-shadow: 0 5px 5px -4px #620000;
+            outline: none;
+            color: yellow;
+            text-shadow: 0 1px 1px #620000;
+            font-weight: bold;
+            background-color: rgba(255,255,255,.25);
+            margin-top: 5px;
+            outline: none;
+        }
+
+        option {
+            color: black;
+        }
+
+        button {
+            padding: 9px 4px;
+            border-radius: 2px 2px 4px 4px;
+            border: 0;
+            background-color: gold;
+            border-bottom: 3px solid #cd8225;
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: bold;
+            color: black;
+            box-shadow: 0 5px 5px -4px #620000;
+            text-shadow: 0 -1px 1px #2c1a03;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .generator {
+            display: none;
+        }
+
+        .result {
+            display: none;
+        }
+
+        span {
+            color: yellow;
+        }
+
+
+
+        div.snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: .7;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('./images/snow/snow.png'), url('./images/snow/snow3.png'), url('./images/snow/snow2.png');
+            -webkit-animation: snow 20s linear infinite;
+            -moz-animation: snow 20s linear infinite;
+            -ms-animation: snow 20s linear infinite;
+            background-repeat: repeat;
+            background-size: 200px;
+            animation: snow 20s linear infinite;
+        }
+
+        @keyframes snow {
+            0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+            100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+        }
+
+        @-moz-keyframes snow {
+            0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+            100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+        }
+
+        @-webkit-keyframes snow {
+            0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+            50% {background-color:#b4cfe0;}
+            100% {background-position: 500px 1000px, 400px 400px, 300px 300px; background-color:#6b92b9;}
+        }
+
+        @-ms-keyframes snow {
+            0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
+            100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="snow"></div>
+    <div class="form">
+        <div>
+            <label for="member_name">Меня зовут</label>
+            <select name="member_name" onchange="checkPassword()">
+                <option value="-1">Выбери свое имя...</option>
+            </select>
+        </div>
+        <div>
+            <label for="password">Пароль</label>
+            <input name="password" type="password" onkeyup="checkPassword()">
+        </div>
+        <div class="generator">
+            <button onclick="generatePair()">Кому мне подарить подарок?</button>
+        </div>
+        <div class="result">
+            <label for="pair">Придумай подарок для</label>
+            <span name="pair"></span>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBY324UoLvJCiwEYMyYD7wMxiG8zQCZjuY",
+            authDomain: "xmas-randomizer.firebaseapp.com",
+            databaseURL: "https://xmas-randomizer-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "xmas-randomizer",
+            storageBucket: "xmas-randomizer.appspot.com",
+            messagingSenderId: "976870330778",
+            appId: "1:976870330778:web:52015f96a274a877756a23"
+        };
+      
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      </script>
+
+    <script>
+        function checkPassword() {
+            document.querySelector('.generator').style.display = 'none';
+            document.querySelector('.result').style.display = 'none';
+
+            memberIndex = +nameSelector.value; 
+            if (memberIndex > -1 && members[memberIndex].password === passwordInput.value.trim()) {
+                if (members[memberIndex].pairId > -1) {
+                    document.querySelector('span').innerText = members[members[memberIndex].pairId].sendName;
+                    document.querySelector('.result').style.display = 'block';
+                } else {
+                    document.querySelector('.generator').style.display = 'block';
+                }
+            }
+        }
+
+        function generatePair() {
+            memberIndex = +nameSelector.value; 
+            if (memberIndex > -1 && members[memberIndex].pairId === -1) {
+                const options = [];
+
+                members.forEach((member, index) => {
+                    if (index !== memberIndex && members[memberIndex].exclude !== index) {
+                        options.push(index);
+                    }
+                });
+
+                const rndIndex = Math.floor(Math.random() * options.length);
+                const pairId = options[rndIndex];
+
+                members[memberIndex].pairId = pairId;
+                firebase.database().ref('members').set(members);
+
+                checkPassword();
+            }
+        }
+
+        const nameSelector = document.querySelector('select');
+        const passwordInput = document.querySelector('input');
+
+        let members = [];
+        let names = [];
+        let memberIndex = -1;
+        let isInitialization = true;
+
+        firebase.database().ref('members').on('value',(snap)=>{
+            members = snap.val();
+
+            if (isInitialization) {
+                names = [];
+                nameSelector.innerHTML = '';
+                
+                const option = document.createElement('OPTION');
+                option.value = -1;
+                option.innerText = 'Выбери свое имя...';
+                nameSelector.appendChild(option);
+
+                if (Array.isArray(members)) {
+                    members.forEach((member, index) => {
+                        names.push({ name: member.name, id: index});
+                        const option = document.createElement('OPTION');
+                        option.value = index;
+                        option.innerText = member.name;
+                        nameSelector.appendChild(option);
+                    });
+                }
+
+                nameSelector.value = memberIndex;
+
+                document.querySelector('body > div.form').style.opacity = 1;
+
+                isInitialization = false;
+            }
+        });
+    </script>
+</body>
+</html>

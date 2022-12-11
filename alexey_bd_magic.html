@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy birthsday magic</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: green;
+            margin: 0;
+            padding: 0;
+            perspective: 1000px;
+        }
+
+        #card {
+            height: 70vh;
+            width: calc(0.64 * 70vh);
+            background: white;
+            position: absolute;
+            top: 15vh;
+            left: calc(50vw - 0.32 * 70vh);
+            background-size: 100% 100%;
+            background-position: center center;
+            border-radius: 26px;
+            box-shadow: 0 2px 10px black;
+            transform: rotateY(0deg);
+            z-index: 100;
+            transition: transform .5s linear;
+        }
+
+        #card.number1 {
+            background-image: url(./Cards/KS.png);
+        }
+        #card.number2 {
+            background-image: url(./Cards/JH.png);
+        }
+        #card.number3 {
+            background-image: url(./Cards/AD.png);
+        }
+        #card.number4 {
+            background-image: url(./Cards/QC.png);
+        }
+        #card.number7 {
+            background-image: url(./Cards/KD.png);
+        }
+        #card.number6 {
+            background-image: url(./Cards/JC.png);
+        }
+        #card.number5 {
+            background-image: url(./Cards/AS.png);
+        }
+        #card.number8 {
+            background-image: url(./Cards/QH.png);
+        }
+
+        #card.fake1 {
+            background-image: url(./Cards/KC.png);
+        }
+        #card.fake2 {
+            background-image: url(./Cards/JD.png);
+        }
+        #card.fake3 {
+            background-image: url(./Cards/AH.png);
+        }
+        #card.fake4 {
+            background-image: url(./Cards/QS.png);
+        }
+        #card.fake7 {
+            background-image: url(./Cards/KH.png);
+        }
+        #card.fake6 {
+            background-image: url(./Cards/JS.png);
+        }
+        #card.fake5 {
+            background-image: url(./Cards/AC.png);
+        }
+        #card.fake8 {
+            background-image: url(./Cards/QD.png);
+        }
+        
+        #card.prize {
+            background-image: url(./Cards/prize.png);
+        }
+
+        .turned1 #card {
+            transform: rotateY(90deg);
+            z-index: 0;
+        }
+
+        #back {
+            height: 70vh;
+            width: calc(0.64 * 70vh);
+            background: repeating-linear-gradient(-120deg, transparent, transparent 20px, #ff9fc3 15px, #b5c0ff 24px),    
+                        repeating-linear-gradient(120deg, #d21a22,#d21a22 20px,rgb(235 156 160) 15px, #ffb8bb 24px);
+            position: absolute;
+            top: 15vh;
+            left: calc(50vw - 0.32 * 70vh);
+            border-radius: 26px;
+            box-shadow: 0 2px 10px black;
+            transform: rotateY(270deg);
+            z-index: 0;
+            transition: transform .5s linear;
+        }
+
+        .turned2 #back {
+            transform: rotateY(360deg);
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="turned1 turned2">
+    <div id="back"></div>
+    <div id="card"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCKPl2NrK0jn58uRFkL9g-HI853gDOTAyg",
+          authDomain: "chernykh-bd.firebaseapp.com",
+          databaseURL: "https://chernykh-bd-default-rtdb.firebaseio.com",
+          projectId: "chernykh-bd",
+          storageBucket: "chernykh-bd.appspot.com",
+          messagingSenderId: "85063436795",
+          appId: "1:85063436795:web:30125b3d63cd23541a235e"
+        };
+      
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      </script>
+
+    <script>
+        function setPhase() {
+            switch(config.phase) {
+                case 0: {
+                    document.querySelector('#card').className = '';
+                    document.querySelector('#card').classList.add(`number${cardnum}`);
+                    setTimeout(() => {
+                        document.body.classList.remove('turned2');
+                        setTimeout(() => {
+                            document.body.classList.remove('turned1');
+                        }, 500);
+                    }, 1000);
+                } break;
+                case 1: {
+                    document.body.classList.add('turned1');
+                        setTimeout(() => {
+                            document.body.classList.add('turned2');
+                        }, 500);
+                } break;
+                case 2: {
+                    document.querySelector('#card').className = '';
+                    document.querySelector('#card').classList.add(`fake${cardnum}`);
+                    document.body.classList.remove('turned2');
+                        setTimeout(() => {
+                            document.body.classList.remove('turned1');
+                        }, 500);
+                } break;
+                case 3: {
+                    document.querySelector('#card').className = '';
+                    document.querySelector('#card').classList.add(`prize`);
+                    setTimeout(() => {
+                        document.body.classList.remove('turned2');
+                        setTimeout(() => {
+                            document.body.classList.remove('turned1');
+                        }, 500);
+                    }, 1000);
+                } break;
+            }
+            localStorage.setItem('phase', config.phase);
+        }
+
+        function clearStorage() {
+            localStorage.removeItem('cardnum');
+            localStorage.removeItem('phase');
+        }
+
+        function checkPhase() {
+            firebase.database().ref('cards').on('value',(snap)=>{
+                config = snap.val();
+                setPhase();
+            });
+        } 
+
+        let cardnum = 1;
+        let config = {
+            phase: 0,
+            cardnum: 1
+        };
+        firebase.database().ref('cards').on('value',(snap)=>{
+            config = snap.val();
+            
+            const storageCardnum = localStorage.getItem('cardnum');
+            if (storageCardnum === null) {
+                cardnum = config.cardnum;
+                localStorage.setItem('cardnum', cardnum);
+
+                config.cardnum++;
+                firebase.database().ref('cards').set(config);
+            } else {
+                cardnum = +storageCardnum;
+            }
+            
+            if (localStorage.getItem('phase') === null || config.phase < 3) {
+                setPhase();
+            }
+        });
+    </script>
+</body>
+</html>
