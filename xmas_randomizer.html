@@ -199,7 +199,7 @@
         </div>
         <div>
             <label for="password">Пароль</label>
-            <input name="password" type="password" onkeyup="checkPassword()">
+            <input name="password" type="password" onkeyup="checkPassword()" onblur="checkPassword()">
         </div>
         <div class="generator">
             <button onclick="generatePair()">Кому мне подарить подарок?</button>
