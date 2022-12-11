@@ -22,13 +22,12 @@
             overflow: hidden;
             padding: 0;
             margin: 0;
-            min-width: 400px;
         }
 
         body > div.form {
             opacity: 0;
             width: 300px;
-            left: calc(50% - 150px);
+            left: calc(50% - 164px);
             background: rgb(255 122 122 / 64%);
             padding: 15px;
             border-radius: 5px;
@@ -67,7 +66,7 @@
         }
 
         input {
-            padding: 4px;
+            padding: 4px !important;
             border: 0;
             background: transparent;
             border-bottom: 2px solid snow;
@@ -77,13 +76,14 @@
             text-shadow: 0 1px 1px #620000;
             background-color: rgba(255,255,255,.25);
             margin-top: 5px;
-            height: 20px;
+            border-radius: 0 !important;
+            height: 20px !important;
             width: calc(100% - 8px) !important;
-            box-sizing: content-box;
+            box-sizing: content-box !important;
         }
 
         select {
-            padding: 4px;
+            padding: 4px !important;
             border: 0;
             background: transparent;
             border-bottom: 2px solid snow;
@@ -95,9 +95,10 @@
             background-color: rgba(255,255,255,.25);
             margin-top: 5px;
             outline: none;
-            height: 20px;
+            border-radius: 0 !important;
+            height: 20px !important;
             width: calc(100% - 8px) !important;
-            box-sizing: content-box;
+            box-sizing: content-box !important;
         }
 
         option {
@@ -152,9 +153,9 @@
             position: absolute;
             top: 0;
             left: 0;
-            opacity: .7;
             width: 100vw;
             height: 100vh;
+            background-color: transparent;
             background-image: url('./images/snow/snow.png'), url('./images/snow/snow3.png'), url('./images/snow/snow2.png');
             -webkit-animation: snow 20s linear infinite;
             -moz-animation: snow 20s linear infinite;
@@ -177,8 +178,7 @@
 
         @-webkit-keyframes snow {
             0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-            50% {background-color:#b4cfe0;}
-            100% {background-position: 500px 1000px, 400px 400px, 300px 300px; background-color:#6b92b9;}
+            100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
         }
 
         @-ms-keyframes snow {
