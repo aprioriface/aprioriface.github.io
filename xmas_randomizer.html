@@ -11,19 +11,16 @@
             width: 100vw;
             height: 100vh;
             background-color: red;
-            background-image: url('./images/back.jpg');
-            background-repeat: repeat;
-            background-size: 300px;
-            background-blend-mode: darken;
             overflow: hidden;
             padding: 0;
             margin: 0;
+            min-width: 400px;
         }
 
         body > div.form {
             opacity: 0;
-            width: 400px;
-            margin: 0 auto;
+            width: 300px;
+            left: calc(50% - 150px);
             background: rgb(255 122 122 / 64%);
             padding: 15px;
             border-radius: 5px;
@@ -34,9 +31,10 @@
             font-weight: bold;
             color: white;
             text-shadow: 0 1px 1px #620000;
-            margin-top: 35vh;
+            top: 35vh;
             transition: opacity .5s;
-            z-index: 1;
+            z-index: 2;
+            position: absolute;
         }
 
         div.form > div {
@@ -122,6 +120,22 @@
 
 
 
+        div.back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('./images/back.jpg');
+            background-repeat: repeat;
+            background-size: 300px;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            z-index: 1;
+            opacity: .25;
+        }
+
         div.snow {
             position: absolute;
             top: 0;
@@ -136,7 +150,7 @@
             background-repeat: repeat;
             background-size: 200px;
             animation: snow 20s linear infinite;
-            z-index: 0;
+            z-index: 1;
         }
 
         @keyframes snow {
@@ -162,6 +176,7 @@
     </style>
 </head>
 <body>
+    <div class="back"></div>
     <div class="snow"></div>
     <div class="form">
         <div>
